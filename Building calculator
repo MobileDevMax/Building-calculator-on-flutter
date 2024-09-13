@@ -1,0 +1,112 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(BuildingCalculatorApp());
+}
+
+class BuildingCalculatorApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Building calculator',
+      home: BuildingCalculatorScreen(),
+    );
+  }
+}
+
+class BuildingCalculatorScreen extends StatefulWidget {
+  @override
+  _BuildingCalculatorScreenState createState() => _BuildingCalculatorScreenState();
+}
+
+class _BuildingCalculatorScreenState extends State<BuildingCalculatorScreen> {
+  final TextEditingController _lengthController = TextEditingController();
+  final TextEditingController _widthController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  
+  String _area = '';
+  String _volume = '';
+
+  void _calculateArea() {
+    double length = double.tryParse(_lengthController.text) ?? 0;
+    double width = double.tryParse(_widthController.text) ?? 0;
+
+    double area = length * width;
+    setState(() {
+      _area = area.toStringAsFixed(2); // Format with 2 decimal places
+    });
+  }
+
+  void _calculateVolume() {
+    double length = double.tryParse(_lengthController.text) ?? 0;
+    double width = double.tryParse(_widthController.text) ?? 0;
+    double height = double.tryParse(_heightController.text) ?? 0;
+
+    double volume = length * width * height;
+    setState(() {
+      _volume = volume.toStringAsFixed(2); // Format with 2 decimal places
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Building calculator'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              controller: _lengthController,
+              decoration: InputDecoration(
+                labelText: 'Enter length (m)',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _widthController,
+              decoration: InputDecoration(
+                labelText: 'Enter width (m)',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 16),
+            TextField(
+              controller: _heightController,
+              decoration: InputDecoration(
+                labelText: 'Enter height (m) (for volume)',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _calculateArea,
+              child: Text('Calculate area'),
+            ),
+            SizedBox(height: 16), 
+            ElevatedButton(
+              onPressed: _calculateVolume,
+              child: Text('Calculate volume'),
+            ),
+            SizedBox(height: 16),
+            Text(
+              _area.isNotEmpty ? 'Square: $_area m²' : '',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              _volume.isNotEmpty ? 'Volume: $_volume m³' : '',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
